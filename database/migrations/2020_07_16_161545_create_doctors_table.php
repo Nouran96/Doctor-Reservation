@@ -18,7 +18,7 @@ class CreateDoctorsTable extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('email')->unique()->nullable();
-            $table->integer('mobile')->nullable();
+            $table->unsignedBigInteger('mobile')->nullable();
             $table->date('birth_date')->nullable();
             $table->string('gender')->nullable();
             $table->string('country')->nullable();

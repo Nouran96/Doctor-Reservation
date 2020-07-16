@@ -15,7 +15,7 @@ class CreatePainsTable extends Migration
     {
         Schema::create('pains', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
+            $table->string('type')->unique();
             $table->string('speciality');
             $table->timestamps();
         });

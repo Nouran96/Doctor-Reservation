@@ -35,7 +35,8 @@ class PatientRequest extends FormRequest
             'birth_date' => 'required|date',
             'mobile' => 'required|numeric',
             'country' => 'required',
-            'occupation' => 'required'
+            'occupation' => 'required',
+            'pain_type' => 'required'
         ];
     }
 }

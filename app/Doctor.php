@@ -14,4 +14,9 @@ class Doctor extends Model
     {
       return $this->morphOne('App\User', 'profilable');
     }
+
+    public function appointments() {
+      
+      return $this->hasMany('App\Appointment');
+    }
 }
