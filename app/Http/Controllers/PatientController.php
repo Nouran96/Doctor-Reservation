@@ -16,13 +16,36 @@ class PatientController extends Controller
         $this->middleware('auth');
     }
 
+    public function index() {
+
+        if(auth()->user()->hasRole('patient')) {
+
+            $appointments = Appointment::where('patient_id', auth()->user()->profilable->id)->get();
+
+        } else if(auth()->user()->hasRole('doctor')) {
+
+            $appointments = Appointment::where('doctor_id', auth()->user()->profilable->id)->get();
+
+        } else if (auth()->user()->hasRole('admin')) {
+
+            $appointments = Appointment::where('doctor_id', null)->get();
+        }
+
+        return view('patients.index', [
+            'appointments' => $appointments,
+            'count' => 0
+        ]);
+    }
+
     public function create() {
 
-        $pains = Pain::all();
+        // $pains = Pain::all();
 
-        return view('patients.create', [
-            'pains' => $pains
-        ]);
+        // return view('patients.create', [
+        //     'pains' => $pains
+        // ]);
+
+        return view('patients.create');
     }
 
     public function store(PatientRequest $request) {
@@ -31,6 +54,7 @@ class PatientController extends Controller
 
         if($validatedData) {
 
+            // Create new Patient
             $patient = Patient::create([
                 'first_name' => $validatedData['first_name'],
                 'last_name' => $validatedData['last_name'],
@@ -44,20 +68,22 @@ class PatientController extends Controller
             
             $user = User::find(auth()->user()->id);
             
+            // Assign the patient to the logged in user
             $patient->user()->save($user);
-            $pain = Pain::where('type', $validatedData['pain_type'])->get();
+            // $pain = Pain::where('type', $validatedData['pain_type'])->get();
             
-            if($pain) {
+            // if($pain) {
 
-                $appointment = Appointment::create([
-                    'pain_type' => $validatedData['pain_type'],
-                    'speciality' => $pain[0]->speciality,
-                    'patient_id' => $patient->id,
-                    'doctor_id' => null
-                ]);
-            }
+            //     // Create an appointment
+            //     $appointment = Appointment::create([
+            //         'pain_type' => $validatedData['pain_type'],
+            //         'speciality' => $pain[0]->speciality,
+            //         'patient_id' => $patient->id,
+            //         'doctor_id' => null
+            //     ]);
+            // }
 
-            return redirect()->route('home');
+            return redirect()->route('appointments.create');
         }
     }
 }

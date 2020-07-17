@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Appointment;
+use App\Pain;
+
+class AppointmentController extends Controller
+{
+    public function index() {
+
+        if(auth()->user()->hasRole('patient')) {
+
+            $appointments = Appointment::where('patient_id', auth()->user()->profilable->id)->get();
+
+        } else if(auth()->user()->hasRole('doctor')) {
+
+            $appointments = Appointment::where('doctor_id', auth()->user()->profilable->id)->get();
+
+        } else if (auth()->user()->hasRole('admin')) {
+
+            $appointments = Appointment::where('doctor_id', null)->get();
+        }
+
+        return view('patients.index', [
+            'appointments' => $appointments,
+            'count' => 0
+        ]);
+    }
+
+    public function create() {
+
+        $pains = Pain::all();
+
+        return view('appointments.create', [
+            'pains' => $pains
+        ]);
+    }
+
+    public function store(Request $request) {
+
+        $validatedData = $request->validate([
+            'pain_type' => 'required'
+        ]);
+
+        $pain = Pain::where('type', $validatedData['pain_type'])->get();
+            
+        if($pain) {
+
+            // Create an appointment
+            $appointment = Appointment::create([
+                'pain_type' => $validatedData['pain_type'],
+                'speciality' => $pain[0]->speciality,
+                'patient_id' => auth()->user()->profilable->id,
+                'doctor_id' => null
+            ]);
+        }
+
+        return redirect()->route('appointments.index');
+    }
+}

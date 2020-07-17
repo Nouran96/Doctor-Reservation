@@ -36,7 +36,6 @@ class PatientRequest extends FormRequest
             'mobile' => 'required|numeric',
             'country' => 'required',
             'occupation' => 'required',
-            'pain_type' => 'required'
         ];
     }
 }
