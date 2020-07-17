@@ -17,6 +17,7 @@ class CreateAppointmentsTable extends Migration
                 $table->id();
                 $table->string('pain_type');
                 $table->string('speciality');
+                $table->datetime('reservation_date')->nullable();
                 $table->unsignedBigInteger('patient_id');
                 $table->unsignedBigInteger('doctor_id')->nullable();
                 $table->foreign('patient_id')->references('id')->on('patients');

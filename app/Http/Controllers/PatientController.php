@@ -70,18 +70,6 @@ class PatientController extends Controller
             
             // Assign the patient to the logged in user
             $patient->user()->save($user);
-            // $pain = Pain::where('type', $validatedData['pain_type'])->get();
-            
-            // if($pain) {
-
-            //     // Create an appointment
-            //     $appointment = Appointment::create([
-            //         'pain_type' => $validatedData['pain_type'],
-            //         'speciality' => $pain[0]->speciality,
-            //         'patient_id' => $patient->id,
-            //         'doctor_id' => null
-            //     ]);
-            // }
 
             return redirect()->route('appointments.create');
         }

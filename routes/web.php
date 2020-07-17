@@ -25,6 +25,4 @@ Route::resource('patients', 'PatientController')->only([
     'create', 'store'
 ]);
 
-Route::resource('appointments', 'AppointmentController')->only([
-    'create', 'store', 'index', 'show'
-]);
+Route::resource('appointments', 'AppointmentController');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Appointment;
 use App\Pain;
+use App\Doctor;
 
 class AppointmentController extends Controller
 {
@@ -23,7 +24,7 @@ class AppointmentController extends Controller
             $appointments = Appointment::where('doctor_id', null)->get();
         }
 
-        return view('patients.index', [
+        return view('appointments.index', [
             'appointments' => $appointments,
             'count' => 0
         ]);
@@ -54,6 +55,38 @@ class AppointmentController extends Controller
                 'speciality' => $pain[0]->speciality,
                 'patient_id' => auth()->user()->profilable->id,
                 'doctor_id' => null
+            ]);
+        }
+
+        return redirect()->route('appointments.index');
+    }
+
+    public function edit(Request $request) {
+
+        $appointment = Appointment::find($request->appointment);
+
+        $pain = Pain::where('type', $appointment->pain_type)->get();
+        $doctors = Doctor::where('speciality', $pain[0]->speciality)->get();
+
+        return view('appointments.edit', [
+            'doctors' => $doctors,
+            'appointment' => $appointment
+        ]);
+    }
+
+    public function update(Request $request) {
+        $validatedData = $request->validate([
+            'doctor_id' => 'required|numeric',
+            'reservation_date' => 'required|date'
+        ]);
+
+
+        if($validatedData) {
+            $appointment = Appointment::find($request->appointment);
+
+            $appointment->update([
+                'doctor_id' => $validatedData['doctor_id'],
+                'reservation_date' => $validatedData['reservation_date']
             ]);
         }
 
