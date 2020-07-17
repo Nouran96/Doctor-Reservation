@@ -10,6 +10,10 @@ use App\Notifications\AppointmentNotification;
 
 class AppointmentController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     public function index() {
 
         if(auth()->user()->hasRole('patient')) {
@@ -87,7 +91,7 @@ class AppointmentController extends Controller
 
             $appointment->update([
                 'doctor_id' => $validatedData['doctor_id'],
-                'reservation_date' => $validatedData['reservation_date']
+                'reservation_date' => $appointment->getReservationDate($validatedData['reservation_date'])
             ]);
 
             $appointment->patient->user->notify(new AppointmentNotification($appointment, 'patient'));
@@ -95,5 +99,20 @@ class AppointmentController extends Controller
         }
 
         return redirect()->route('appointments.index');
+    }
+
+    public function decline(Request $request) {
+        $appointment = Appointment::find($request->appointment);
+
+        $appointment->update([
+            'reservation_date' => $appointment->getReservationDate(null),
+            'doctor_id' => null
+        ]);
+
+        return redirect()->route('appointments.index');
+    }
+
+    public function accept() {
+        return 'Thank your for accepting the appointment';
     }
 }

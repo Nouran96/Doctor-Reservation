@@ -26,3 +26,6 @@ Route::resource('patients', 'PatientController')->only([
 ]);
 
 Route::resource('appointments', 'AppointmentController');
+
+// Route::get('/accept', 'AppointmentController@accept');
+Route::get('/decline/{appointment}', 'AppointmentController@decline');

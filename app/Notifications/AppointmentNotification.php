@@ -43,12 +43,16 @@ class AppointmentNotification extends Notification
      */
     public function toMail($notifiable)
     {
+        $acceptUrl = url('/appointments');
+        $declineUrl = url('/decline/' . $this->appointment->id);
 
         return (new MailMessage)
                 ->subject('New Appointment')
                 ->markdown('emails.appointment', [
                     'appointment' => $this->appointment,
-                    'type' => $this->type
+                    'type' => $this->type,
+                    'acceptUrl' => $acceptUrl,
+                    'declineUrl' => $declineUrl
                 ]);
     }
 
