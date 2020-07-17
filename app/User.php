@@ -43,4 +43,10 @@ class User extends Authenticatable
     {
         return $this->morphTo();
     }
+
+    public function routeNotificationForMail($notification)
+    {
+        // Return email address only...
+        return $this->profilable->email;
+    }
 }

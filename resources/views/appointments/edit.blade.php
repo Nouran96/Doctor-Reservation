@@ -14,7 +14,7 @@
                         <div class="col-md-4 text-md-right">{{ __('Patient Name') }}</div>
 
                         <div class="col-md-6">
-                            {{ $appointment->patient->first_name . ' ' . $appointment->patient->last_name }}
+                            {{ $appointment->patient->fullName() }}
                         </div>
                     </div>
 

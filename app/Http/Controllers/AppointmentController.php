@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Appointment;
 use App\Pain;
 use App\Doctor;
+use App\Notifications\AppointmentNotification;
 
 class AppointmentController extends Controller
 {
@@ -88,6 +89,9 @@ class AppointmentController extends Controller
                 'doctor_id' => $validatedData['doctor_id'],
                 'reservation_date' => $validatedData['reservation_date']
             ]);
+
+            $appointment->patient->user->notify(new AppointmentNotification($appointment, 'patient'));
+            $appointment->doctor->user->notify(new AppointmentNotification($appointment, 'doctor'));
         }
 
         return redirect()->route('appointments.index');

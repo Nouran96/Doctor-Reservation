@@ -22,7 +22,7 @@ class DoctorSeeder extends Seeder
         $user1->assignRole('doctor');
 
         $doctor1 = Doctor::create([
-            'first_name' => 'Dr. Marc',
+            'first_name' => 'Marc',
             'last_name' => 'Anderson',
             'email' => 'm.anderson@hotmail.com',
             'gender' => 'male',
@@ -43,7 +43,7 @@ class DoctorSeeder extends Seeder
         $user2->assignRole('doctor');
 
         $doctor2 = Doctor::create([
-            'first_name' => 'Dr. Angela',
+            'first_name' => 'Angela',
             'last_name' => 'Anderson',
             'email' => 'a.anderson@hotmail.com',
             'gender' => 'female',

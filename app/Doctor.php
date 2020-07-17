@@ -19,4 +19,8 @@ class Doctor extends Model
       
       return $this->hasMany('App\Appointment');
     }
+
+    public function fullName() {
+      return 'Dr. ' . $this->first_name . ' ' . $this->last_name;
+    }
 }
